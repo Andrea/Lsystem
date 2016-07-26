@@ -38,7 +38,7 @@ let createLogoRenderer () =
 
             for ls in lines do
                 mainRenderer 
-                |> SDL.Render.setDrawColor(ls.colour.r,ls.colour.g,ls.colour.b,ls.colour.a)
+                |> SDL.Render.setDrawColor(ls.color.r,ls.color.g,ls.color.b,ls.color.a)
                 |> ignore
                 
                 mainRenderer
@@ -79,7 +79,7 @@ let randomShit n =
         let rpy() = 
             {x = chaos.Next(int windowWidth); 
              y = chaos.Next(int windowWidth)} : Domain.Point
-        lines.Add({startPoint=rpy(); endPoint=rpy(); colour = c})
+        lines.Add({startPoint=rpy(); endPoint=rpy(); color = c})
     
 
 createWindow |> Async.Start

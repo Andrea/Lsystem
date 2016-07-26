@@ -50,15 +50,9 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Program.fs" />
     <None Include="App.config" />
-    <None Include="SDL.fsx" />
     <None Include="Domain.fsx" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\..\repos\SDLFS\SDL2FS\SDL2FS.fsproj">
-      <Name>SDL2FS</Name>
-      <Project>{aacd42b3-8d59-4395-ba7b-4cc02ee319bb}</Project>
-      <Private>True</Private>
-    </ProjectReference>
+    <None Include="SDL.fsx" />
+    <None Include="svg.fsx" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>

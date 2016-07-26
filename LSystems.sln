@@ -3,7 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LSystem_Fs", "LSystem\LSystem_Fs.fsproj", "{12EE3B7E-8885-4159-B22A-91A887AE58BA}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12EE3B7E-8885-4159-B22A-91A887AE58BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12EE3B7E-8885-4159-B22A-91A887AE58BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12EE3B7E-8885-4159-B22A-91A887AE58BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12EE3B7E-8885-4159-B22A-91A887AE58BA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection

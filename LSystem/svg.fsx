@@ -29,3 +29,20 @@ open System.IO
 // fix the path for your own machine!
 let path = "../lsystem.html"
 let save template = File.WriteAllText(path,template)
+
+open Domain
+
+//[<EntryPoint>]
+let main   =
+    let seg = {
+        LineSegment.startPoint = {Point.x = 2; y =1 }
+        LineSegment.endPoint = {x = 200; y = 300 }
+        LineSegment.color = {r = 255uy ;g = 200uy ; b = 133uy }
+        }
+    
+    [seg]
+    |> toSvg 
+    |> save
+    0
+
+main 

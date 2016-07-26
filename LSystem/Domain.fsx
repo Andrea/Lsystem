@@ -58,4 +58,12 @@ let lsystem (axiom:string) iterations =
                 else sb |> ignore
             juan (sb.ToString()) (iteration+1)
     juan axiom 0
-    
+
+let convertToTurtle (bla:string) =
+     [for x in bla.ToCharArray() do
+         match x with
+         | 'A' -> yield Forward(20.0, Some({r=255uy;g=0uy;b=0uy}))
+         | _  -> yield Forward(20.0, None)
+         
+                                ]
+                                

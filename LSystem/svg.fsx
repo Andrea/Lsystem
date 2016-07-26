@@ -26,21 +26,27 @@ let toSvg (ops:Domain.LineSegment seq) =
 
 open System.IO
 
-// fix the path for your own machine!
 let path = "../lsystem.html"
 let save template = File.WriteAllText(path,template)
 
 open Domain
 
+let testProgram = 
+    [for x in 1..8 do
+         yield Forward(10.0,Some red)
+         yield Forward(10.0,None)
+         yield Turn 45.0 ]
+
+let executeProgram program =
+    let t = {angle = 0.0; x = 100.0; y = 100.0}
+    (processTurtle t program)
+
+
 //[<EntryPoint>]
 let main   =
-    let seg = {
-        LineSegment.startPoint = {Point.x = 2; y =1 }
-        LineSegment.endPoint = {x = 200; y = 300 }
-        LineSegment.color = {r = 255uy ;g = 200uy ; b = 133uy }
-        }
-    
-    [seg]
+    lsystem "A" 5
+    |> convertToTurtle
+    |>  executeProgram 
     |> toSvg 
     |> save
     0

@@ -45,3 +45,17 @@ let processTurtle turtle program =
             phono output {turtle with angle = d} t
 
     List.rev(phono [] turtle program)
+
+
+let lsystem (axiom:string) iterations =
+    let rec juan (current:string) iteration =
+        if iteration = iterations then current
+        else
+            let sb = System.Text.StringBuilder()
+            for x in current.ToCharArray() do
+                if x = 'A' then sb.Append("ABA") |> ignore
+                elif x = 'B' then sb.Append("BBB") |> ignore
+                else sb |> ignore
+            juan (sb.ToString()) (iteration+1)
+    juan axiom 0
+    

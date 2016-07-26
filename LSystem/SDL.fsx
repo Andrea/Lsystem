@@ -65,9 +65,7 @@ let createLogoRenderer () =
 
     coreLoop()
 
-let createWindow = async {
-    return createLogoRenderer()
-}
+let createWindow = async { return createLogoRenderer() }
 
 let randomShit n =
     lines.Clear()

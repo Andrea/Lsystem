@@ -1,5 +1,5 @@
-﻿#r @"C:\repos\SDLFS\SDL2FS\bin\Debug\SDL2FS.dll"
-
+﻿#r @"..\Lib\SDL2FS.dll"
+#load "Domain.fsx"
 open System
 
 open SDL.Geometry
@@ -13,9 +13,11 @@ let fps = 60.0
 let delayTime = uint32(1000.0 / fps)
 let chaos = System.Random(System.DateTime.Now.Millisecond)
 
-type LineSegment = {startPoint : Point; endPoint : Point; colour : Color }    
+let lines = ResizeArray<Domain.LineSegment>()
 
-let lines = ResizeArray<LineSegment>()
+let toSDLPoint(p:Domain.Point) = { X = p.x*1<SDL.px>; Y = p.y*1<SDL.px> } : SDL.Geometry.Point
+
+let toSDLColor(c:Domain.Color) = { Red = c.r; Green = c.g; Blue = c.b; Alpha = c.a } : Color
 
 let createLogoRenderer () = 
     use system = new SDL.Init.System(SDL.Init.Init.Everything)
@@ -36,11 +38,11 @@ let createLogoRenderer () =
 
             for ls in lines do
                 mainRenderer 
-                |> SDL.Render.setDrawColor(ls.colour.Red,ls.colour.Green,ls.colour.Blue,ls.colour.Alpha)
+                |> SDL.Render.setDrawColor(ls.colour.r,ls.colour.g,ls.colour.b,ls.colour.a)
                 |> ignore
                 
                 mainRenderer
-                |> SDL.Render.drawLine(ls.startPoint,ls.endPoint)   
+                |> SDL.Render.drawLine(toSDLPoint ls.startPoint,toSDLPoint ls.endPoint)   
                 |> ignore
 
             mainRenderer
@@ -73,10 +75,10 @@ let randomShit n =
     lines.Clear()
     let rby() = uint8 <| chaos.Next 256
     for x in 1..n do
-        let c = { Red=rby(); Green=rby(); Blue=rby(); Alpha=0uy }
+        let c = { r=rby(); g=rby(); b=rby(); a=0uy } : Domain.Color
         let rpy() = 
-            {X = chaos.Next(int windowWidth)*1<SDL.px>; 
-             Y = chaos.Next(int windowWidth)*1<SDL.px>} : Point
+            {x = chaos.Next(int windowWidth); 
+             y = chaos.Next(int windowWidth)} : Domain.Point
         lines.Add({startPoint=rpy(); endPoint=rpy(); colour = c})
     
 

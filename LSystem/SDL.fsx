@@ -17,8 +17,6 @@ let lines = ResizeArray<Domain.LineSegment>()
 
 let toSDLPoint(p:Domain.Point) = { X = p.x*1<SDL.px>; Y = p.y*1<SDL.px> } : SDL.Geometry.Point
 
-let toSDLColor(c:Domain.Color) = { Red = c.r; Green = c.g; Blue = c.b; Alpha = c.a } : Color
-
 let createLogoRenderer () = 
     use system = new SDL.Init.System(SDL.Init.Init.Everything)
     use window = SDL.Window.create "SDL2FS" (100<SDL.px>, 200<SDL.px>) (windowHeight,windowHeight) (SDL.Window.Flags.Shown)

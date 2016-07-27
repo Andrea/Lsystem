@@ -30,7 +30,7 @@ let path = "../lsystem.html"
 let save template = File.WriteAllText(path,template)
 
 let main   =
-    sierpinski (int 300.0)
+    ferns
     |> processLsystem 8
     |> (processTurtle {angle = 0.0; x = 0.0; y = (10.0) ; c = red}) 
     |> toSvg 

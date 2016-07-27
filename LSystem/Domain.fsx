@@ -163,3 +163,22 @@ let dragon = {
             | _ -> None
 }
 
+
+let ferns = {
+    Axiom = "X"
+    Productions = 
+        function
+        | 'X' ->  "F−[[X]+X]+F[+FX]−X)"
+        | 'F' -> "FF"
+        | c -> string c
+    Actions = 
+        fun max c ->
+            let lenght = 5.
+            match c with
+            | 'F' -> Some <| [DrawForward(lenght)]
+            | '+' -> Some <| [Turn 25.0]
+            | '-' -> Some <| [Turn -25.0]
+            | _   -> None
+}
+
+

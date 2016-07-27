@@ -30,7 +30,7 @@ open System.Collections.Generic
 /// interprets a logo program and produces a line segment list to render
 let processTurtle turtle program =
     
-    let mutable state = Stack<double * double>()
+    let mutable state = Stack<double * double * double>()
 
     let rec phono output turtle = function
         | [] -> output
@@ -61,11 +61,11 @@ let processTurtle turtle program =
                 elif delta < 0.0 && d < 0.0 then 360.0 + d
                 else d
             phono output {turtle with angle = d} t
-        | Push :: t  -> state.Push (turtle.x, turtle.y)
+        | Push :: t  -> state.Push (turtle.x, turtle.y, turtle.angle)
                         phono output turtle t   
         | Pop :: t -> 
-                let pos = state.Pop()
-                let newTurtle = {turtle with x = fst pos; y= snd pos }
+                let xe, ye, ange = state.Pop()
+                let newTurtle = {turtle with x = xe; y= ye ; angle = ange }
                 phono output newTurtle t   
                 
     List.rev(phono [] turtle program)
@@ -179,16 +179,16 @@ let ferns = {
     Axiom = "X"
     Productions = 
         function
-        | 'X' ->  "F−[[X]+X]+F[+FX]−X"
+        | 'X' ->  "F−[[-X]+X]+F[+FX]−X"
         | 'F' -> "FF"
         | c -> string c
     Actions = 
         fun max c ->
-            let lenght = 10.
+            let lenght = 2.5
             match c with
             | 'F' -> Some <| [DrawForward(lenght)]
-            | '+' -> Some <| [Turn 5.0]
-            | '-' -> Some <| [Turn -5.0]
+            | '+' -> Some <| [Turn 20.0]
+            | '-' -> Some <| [Turn -17.0]
             | '[' -> Some <| [Push]
             | ']' -> Some <| [Pop]
             | _   -> None

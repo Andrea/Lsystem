@@ -31,8 +31,8 @@ let save template = File.WriteAllText(path,template)
 
 let main   =
     ferns
-    |> processLsystem 6
-    |> (processTurtle {angle = 90.0; x = 400.0; y = (700.0) ; c = red}) 
+    |> processLsystem 7
+    |> (processTurtle {angle = 270.0; x = 200.0; y = (700.0) ; c = red}) 
     |> toSvg 
     |> save
     0

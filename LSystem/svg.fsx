@@ -31,22 +31,12 @@ let save template = File.WriteAllText(path,template)
 
 open Domain
 
-let testProgram = 
-    [for x in 1..8 do
-         yield Forward(10.0,Some red)
-         yield Forward(10.0,None)
-         yield Turn 45.0 ]
-
-let executeProgram program =
-    let t = {angle = 0.0; x = 100.0; y = 100.0}
-    (processTurtle t program)
-
 
 //[<EntryPoint>]
 let main   =
-    lsystem "A" 5
-    |> convertToTurtle
-    |>  executeProgram
+    sierpinski (int 300.0)
+    |> processLsystem 8
+    |> (processTurtle {angle = 0.0; x = 0.0; y = (10.0) ; c = red}) 
     |> toSvg 
     |> save
     0

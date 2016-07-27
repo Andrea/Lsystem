@@ -64,6 +64,36 @@ let convertToTurtle (bla:string) =
          match x with
          | 'A' -> yield Forward(20.0, Some({r=255uy;g=0uy;b=0uy}))
          | _  -> yield Forward(20.0, None)
-         
+        
                                 ]
-                                
+type Variable =  Variable of char * LogoCommand list
+
+type Axiom = string
+
+type Rules  = (Variable -> Variable list)
+
+let defaultLenght = 20.0
+let defaultColor = Some({r=255uy;g=0uy;b=0uy})
+let validateRule rule var cons =
+    0
+
+let variables = [
+    Variable('X', [Forward(defaultLenght, defaultColor)])
+    Variable('-', [Turn 90.0])
+    ]
+// let constants = [Variable('F'); Variable('+');  Variable('-') ]
+
+
+
+// let dragonCurve (axiom: Axiom) iterations =
+//     let rec dragonCats current iter =
+//         if iter = iterations then current
+//         else
+//             let sb = System.Text.StringBuilder()
+//             for x in current.ToCharArray() do
+//                if x = 'X' then sb.Append("X+YF+")
+//                elif x = 'Y' then sb.Append("−FX−Y")
+//                else sb
+//         dragonCats (sb.ToString()) (iter+1)
+//    dragonCats Axiom("FX") 0
+

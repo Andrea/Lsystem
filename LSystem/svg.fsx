@@ -46,7 +46,7 @@ let executeProgram program =
 let main   =
     lsystem "A" 5
     |> convertToTurtle
-    |>  executeProgram 
+    |>  executeProgram
     |> toSvg 
     |> save
     0

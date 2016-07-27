@@ -18,15 +18,20 @@ type LogoCommand =
     | MoveForward of float
     | ChangeColor of Color
     | Turn of float
+    | Push
+    | Pop
    
 type LTurtle = 
     { angle : float
       x : float
       y : float 
       c : Color} 
-
+open System.Collections.Generic
 /// interprets a logo program and produces a line segment list to render
 let processTurtle turtle program =
+    
+    let mutable state = Stack<double * double>()
+
     let rec phono output turtle = function
         | [] -> output
         | ChangeColor c :: t -> phono output {turtle with c = c} t
@@ -56,7 +61,13 @@ let processTurtle turtle program =
                 elif delta < 0.0 && d < 0.0 then 360.0 + d
                 else d
             phono output {turtle with angle = d} t
-
+        | Push :: t  -> state.Push (turtle.x, turtle.y)
+                        phono output turtle t   
+        | Pop :: t -> 
+                let pos = state.Pop()
+                let newTurtle = {turtle with x = fst pos; y= snd pos }
+                phono output newTurtle t   
+                
     List.rev(phono [] turtle program)
 
     
@@ -78,7 +89,7 @@ let processLsystem max lsystem =
             gen (sb.ToString()) (iteration+1)
               
     let finish = gen lsystem.Axiom 0
-
+    System.Console.WriteLine ("Axiom: {0} -  Max :{1} ", lsystem.Axiom, max) |> ignore
     // now convert to turtle commands
     finish.ToCharArray() |> List.ofArray |> List.choose (lsystem.Actions max) |> List.collect id
 
@@ -168,17 +179,20 @@ let ferns = {
     Axiom = "X"
     Productions = 
         function
-        | 'X' ->  "F−[[X]+X]+F[+FX]−X)"
+        | 'X' ->  "F−[[X]+X]+F[+FX]−X"
         | 'F' -> "FF"
         | c -> string c
     Actions = 
         fun max c ->
-            let lenght = 5.
+            let lenght = 10.
             match c with
             | 'F' -> Some <| [DrawForward(lenght)]
-            | '+' -> Some <| [Turn 25.0]
-            | '-' -> Some <| [Turn -25.0]
+            | '+' -> Some <| [Turn 5.0]
+            | '-' -> Some <| [Turn -5.0]
+            | '[' -> Some <| [Push]
+            | ']' -> Some <| [Pop]
             | _   -> None
 }
+
 
 

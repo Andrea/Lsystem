@@ -1,6 +1,8 @@
 #load "Domain.fsx"
 
 open System
+open System.IO
+open Domain
 
 let header = """
 <!DOCTYPE html>
@@ -24,15 +26,9 @@ let toSvg (ops:Domain.LineSegment seq) =
       yield footer ]
     |> String.concat "\n"
 
-open System.IO
-
 let path = "../lsystem.html"
 let save template = File.WriteAllText(path,template)
 
-open Domain
-
-
-//[<EntryPoint>]
 let main   =
     sierpinski (int 300.0)
     |> processLsystem 8

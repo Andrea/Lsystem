@@ -1,4 +1,4 @@
-#load "Domain.fsx"
+#load "1-GettingStarted.fsx"
 
 open System
 open System.IO
@@ -30,9 +30,7 @@ let path = "../lsystem.html"
 let save template = File.WriteAllText(path,template)
 
 let main   =
-    ferns
-    |> processLsystem 7
-    |> (processTurtle {angle = 270.0; x = 200.0; y = (700.0) ; c = red}) 
+    randomShit 20
     |> toSvg 
     |> save
     0

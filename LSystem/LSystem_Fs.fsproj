@@ -50,7 +50,6 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Program.fs" />
     <None Include="App.config" />
-    <None Include="Domain.fsx" />
     <None Include="SDL.fsx" />
     <None Include="svg.fsx" />
   </ItemGroup>

@@ -30,7 +30,7 @@ let path = "../lsystem.html"
 let save template = File.WriteAllText(path,template)
 
 let main   =
-    randomShit 20
+    randomPOOP 20
     |> toSvg 
     |> save
     0

@@ -1,4 +1,5 @@
-﻿
+﻿module Domain
+
 type Point = { x : int; y : int }
 
 type Color = { r:byte; g:byte; b:byte; } 
@@ -25,7 +26,7 @@ type LTurtle =
       x : float
       y : float 
       c : Color} 
-
+let turtle = { x = 400.0; y = 400.0; angle = 0.0; c = red }
 /// interprets a logo program and produces a line segment list to render
 let processTurtle turtle program =
     

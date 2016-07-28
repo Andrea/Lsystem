@@ -57,7 +57,7 @@ let processTurtle turtle program =
                 elif delta < 0.0 && d < 0.0 then 360.0 + d
                 else d
             phono output {turtle with angle = d} t
-           
+        // HINT: You might want to do something about the pushing and poping ;)   
                 
     List.rev(phono [] turtle program)
 

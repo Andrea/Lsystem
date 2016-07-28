@@ -15,7 +15,7 @@ let randomColor() = { r = uint8(chaos.Next 256);g = uint8(chaos.Next 256);b = ui
 
 type LogoCommand =
     | DrawForward of float 
-    | MoveForward of float //! Notice we have added some new commands !
+    | MoveForward of float
     | ChangeColor of Color
     | Turn of float
     
@@ -60,8 +60,7 @@ let processTurtle turtle program =
             phono output {turtle with angle = d} t
     List.rev(phono [] turtle program)
 
-// Here we have generalised an LSystem so they can be more easily
-// written and processed    
+    
 type LSystem = {
     Axiom : string
     Productions : char -> string
@@ -70,7 +69,7 @@ type LSystem = {
 
 let processLsystem max lsystem =
     // first we perform the l-system generation
-    // use a fast imperative generator..
+    // fast imperative generator
     let rec gen (current:string) iteration =
         if iteration = max then current
         else
@@ -81,13 +80,14 @@ let processLsystem max lsystem =
               
     let finish = gen lsystem.Axiom 0
     // now convert to turtle commands
-    finish.ToCharArray() 
-    |> List.ofArray 
-    |> List.choose (lsystem.Actions max) 
-    |> List.collect id
+    finish.ToCharArray() |> List.ofArray |> List.choose (lsystem.Actions max) |> List.collect id
 
 
-// TODO 3 : These are some L-systems... go nuts!!! Change colours, change the productions, etc!!
+
+
+
+// TODO 3 :These are some L-systems... go nuts!!! 
+//Change colours, change the productions, etc!!
 
 let cantor width = {
     Axiom = "A"
@@ -149,7 +149,6 @@ let koch = {
             | _ -> None
 }
 
-// TODO: can you work out a way to use these colours?
 let dragColours = [for x in 0..20 -> x,randomColor()] |> dict
 
 let dragon = {

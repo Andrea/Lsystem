@@ -1,5 +1,4 @@
-﻿// woo ferns!
-
+﻿
 type Point = { x : int; y : int }
 
 type Color = { r:byte; g:byte; b:byte; } 
@@ -19,6 +18,7 @@ type LogoCommand =
     | MoveForward of float
     | ChangeColor of Color
     | Turn of float
+    
    
 type LTurtle = 
     { angle : float
@@ -58,8 +58,6 @@ let processTurtle turtle program =
                 elif delta < 0.0 && d < 0.0 then 360.0 + d
                 else d
             phono output {turtle with angle = d} t
-        // HINT: You might want to do something about the pushing and poping ;)   
-                
     List.rev(phono [] turtle program)
 
     
@@ -81,36 +79,92 @@ let processLsystem max lsystem =
             gen (sb.ToString()) (iteration+1)
               
     let finish = gen lsystem.Axiom 0
-    System.Console.WriteLine ("Axiom: {0} -  Max :{1} ", lsystem.Axiom, max) |> ignore
     // now convert to turtle commands
     finish.ToCharArray() |> List.ofArray |> List.choose (lsystem.Actions max) |> List.collect id
 
 
-// TODO 4: implement ferns
-(*
-F  = Move forward
-X  = No op
-- = Turn left 'degree'
-+ = Turn right 'degree'
-[ = remember current position and angle on stack... VERY IMPORTANT: remember the angle!! (A++ easy to forget) 
-] = restore position and use it to draw from there.
-
-HINT! You are probably going to need to add some new LogoCommands ...
-
-*) 
 
 
-let ferns = {
-    Axiom = "X"
-    Productions = 
-        function
-        | 'X' ->  "F−[[-X]+X]+F[+FX]−X"
-        | 'F' -> "FF"
-        | c -> string c
+
+// TODO 3 :These are some L-systems... go nuts!!! Change colours, change the productions, etc!!
+
+let cantor width = {
+    Axiom = "A"
+    Productions = function 'A' -> "ABA" | _ -> "BBB"
     Actions = 
-        fun max c -> //FEED ME!
-            None
+        fun max c -> 
+            let length =   
+                let width = float width
+                if max = 0 then width 
+                else width / (System.Math.Pow(3.0, float max))
+     
+            match c with 
+            | 'A' -> Some <| [DrawForward(length)]
+            | _ -> Some <| [MoveForward(length)]
+    
+}
+
+let sierpinski width = {
+    Axiom = "A"
+   
+    Productions =
+        function
+        | 'A' -> "+B-A-B+" 
+        | 'B' -> "-A+B+A-" 
+        | c -> string c
+
+    Actions = 
+        fun max c -> 
+            let length =   
+                let width = float width
+                if max = 0 then width 
+                else width / (System.Math.Pow(2.0, float max))
+     
+            match c with
+            | 'A' -> Some <| [DrawForward(length)]
+            | 'B' -> Some <| [MoveForward(length)]
+            | '+' -> Some <| [Turn 60.0]
+            | '-' -> Some <| [Turn -60.0]
+            | _ -> None
 }
 
 
 
+let koch = {
+    Axiom = "F"
+   
+    Productions = 
+        function
+        | 'F' -> "F+F-F-F+F" 
+        | c -> string c
+
+    Actions = 
+        fun max c -> 
+            let length = 2.0
+            match c with
+            | 'F' -> Some <| [DrawForward(length)]
+            | '+' -> Some <| [Turn 90.0]
+            | '-' -> Some <| [Turn -90.0]
+            | _ -> None
+}
+
+let dragColours = [for x in 0..20 -> x,randomColor()] |> dict
+
+let dragon = {
+    Axiom = "FX"
+   
+    Productions = 
+        function
+        | 'X' -> "X+YF+" 
+        | 'Y' -> "-FX-Y"
+        | c -> string c
+
+    Actions = 
+        fun max c -> 
+            let length = 5.0
+            match c with
+            | 'F' -> Some <| [DrawForward(length)]
+            | '+' -> Some <| [Turn 90.0]
+            | '-' -> Some <| [Turn -90.0]
+            | _ -> None
+}

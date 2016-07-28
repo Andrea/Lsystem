@@ -8,7 +8,7 @@
 - data-background : images/dragon.gif
 - data-background-size : 600px
 
-# L System Workshop 
+## L System Workshop 
 
 ---
 
@@ -47,8 +47,23 @@ LOGO
 ## + -> Turn Right 
 ## - -> Turn Left
 
-
 ***
 
+##Fractal Plants
+
+---
+
+start  : X
+
+rules / productions  : 
+
+X → F−[[X]+X]+F[+FX]−X
+
+F → FF
+
+angle  : 25°
+
+***
 - data-background : images/herding-cats.jpg
-- data-background-size : 900px
+
+# The End

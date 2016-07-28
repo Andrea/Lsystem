@@ -156,3 +156,5 @@ $RECYCLE.BIN/
 
 *.exe
 *.html
+
+output/

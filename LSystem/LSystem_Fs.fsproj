@@ -50,6 +50,10 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Program.fs" />
     <None Include="App.config" />
+    <None Include="1-GettingStarted.fsx" />
+    <None Include="2-First-L-System.fsx" />
+    <None Include="3-Generalized-L-system.fsx" />
+    <None Include="4.Ferns.fsx" />
     <None Include="SDL.fsx" />
     <None Include="svg.fsx" />
   </ItemGroup>

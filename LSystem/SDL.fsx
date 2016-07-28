@@ -1,5 +1,6 @@
 ﻿#r @"..\Lib\SDL2FS.dll"
-#load "Domain.fsx"
+#load "1-GettingStarted.fsx"
+
 open System
 open Domain
 open SDL.Geometry
@@ -9,11 +10,8 @@ open SDL.Surface
 
 let windowWidth = 1280<SDL.px>
 let windowHeight = 1024<SDL.px>
-let fps = 60.0
+let fps = 60.0                                                                                                              
 let delayTime = uint32(1000.0 / fps)
-let chaos = System.Random(System.DateTime.Now.Millisecond)
-
-let toSDLPoint(p:Domain.Point) = { X = p.x*1<SDL.px>; Y = p.y*1<SDL.px> } : SDL.Geometry.Point
 
 type GraphicsMessage =
     | Add of LineSegment list
@@ -30,8 +28,8 @@ let agent = MailboxProcessor<GraphicsMessage>.Start(fun inbox ->
     let window = SDL.Window.create "SDL2FS" (100<SDL.px>, 100<SDL.px>) (windowWidth,windowHeight) (SDL.Window.Flags.Shown)
     let mainRenderer = SDL.Render.create window -1 SDL.Render.Flags.Accelerated  
     let state = {system = system; window=window; renderer=mainRenderer; lines = []}
+    let toSDLPoint(p:Domain.Point) = { X = p.x*1<SDL.px>; Y = p.y*1<SDL.px> } : SDL.Geometry.Point
     let rec coreLoop state = async {
-//        printfn "looping"
         match SDL.Event.poll() with
         | Some v when not v.isQuitEvent ->
             // handle events
@@ -40,7 +38,6 @@ let agent = MailboxProcessor<GraphicsMessage>.Start(fun inbox ->
             state.renderer.Destroy()
             state.window.Destroy()
             state.window.Destroy()
-            
         | _ ->
             let! msg = inbox.TryReceive 0
             match msg with
@@ -84,43 +81,11 @@ let agent = MailboxProcessor<GraphicsMessage>.Start(fun inbox ->
     coreLoop state
 )
 
+// helpers for clearing the screen, and adding lines to be rendered
+let clear() = agent.Post <| Replace []
+let replace lines = agent.Post <| Replace lines
+let add lines = agent.Post <| Add lines
 
-agent.Post <| Replace([])
-
-let drawCantor() =
-    for y in 0..6 do 
-        agent.Post<| 
-            Add(
-                cantor (int windowWidth)
-                |> processLsystem y
-                |> (processTurtle {angle = 0.0; x = 0.0; y = 100.0 + (10.0 * float y) ; c = red}))
-
-agent.Post <|
-    Replace(sierpinski (int windowWidth)
-            |> processLsystem 8
-            |> (processTurtle {angle = 0.0; x = 0.0; y = (10.0) ; c = red}))
-
-
-
-agent.Post <|
-    Replace(koch 
-            |> processLsystem 5       
-            |> (processTurtle {angle = 0.0; x = 0.0; y = (10.0) ; c = red}))
-
-
-
-agent.Post <|
-    Replace(dragon 
-            |> processLsystem 7
-            |> (processTurtle {angle = 0.0; x = 800.0; y = (400.0) ; c = red}))
-
-
-let drawDragon() =
-    agent.Post <| Replace []
-    for y in 0..13 do
-        agent.Post<| 
-            Add(
-                dragon 
-                |> processLsystem y
-                |> (processTurtle {angle = 0.0; x = 800.0; y = 400.0  ; c = red}))
-
+// draw some crap to the screen
+randomPOOP 20
+|> replace

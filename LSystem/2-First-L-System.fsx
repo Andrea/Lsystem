@@ -14,14 +14,10 @@ let green = { r = 0uy; g = 255uy; b = 255uy}
 
 let randomColor() = { r = uint8(chaos.Next 256);g = uint8(chaos.Next 256);b = uint8(chaos.Next 256) }
 
-//TODO 1 Do the Sierpinski triangle
-
-
+// A basic LOGO system
 type LogoCommand =
     | DrawForward of float 
-    | MoveForward of float
-    | Turn of float
-    
+    | Turn of float    
    
 type LTurtle = 
     { angle : float
@@ -44,13 +40,6 @@ let processTurtle turtle program =
                     color = newTurtle.c }
             phono (seg::output) newTurtle t
             
-        | MoveForward d :: t -> 
-            let rads = turtle.angle * (System.Math.PI / 180.0)
-            let x = turtle.x + d * cos rads
-            let y = turtle.y + d * sin rads
-            let newTurtle = {turtle with x = x; y= y }
-            phono output newTurtle t
-
         | Turn delta :: t -> 
             let d = turtle.angle + delta
             let d =
@@ -61,18 +50,49 @@ let processTurtle turtle program =
             phono output {turtle with angle = d} t 
                 
     List.rev(phono [] turtle program)
-
     
-// TODO 2.1:  write a function that converts an initial string to productions like this
+// TODO 2.1:  write a function that converts an initial string 
+// using the following productions:
 // Sierpinski  
 // Start = "A"   
 // Productions 
 //      'A' -> "+B-A-B+" 
 //      'B' -> "-A+B+A-" 
     
-let processLsystem iterations currentString =
-    ""
-    
+let processLsystem iterations =
+    let rec proc iter (current: string) =  
+      current
+    proc 0 "A"
+
+let test1  = processLsystem 1 = "+B-A-B+"  
+let test2  = processLsystem 2 = "+-A+B+A--+B-A-B+--A+B+A-+"  
+
+let defaultLength = 20.0
+let defaultAngle = 60.0
+
 // TODO 2.2: Convert the string into turtle commands
-let convertToTurtle comands =
-    [Turn 50.0]
+// A and B do the same thing - draw forward 
+// + turns 60 degrees
+// - turns -60 degrees
+
+let convertToTurtle (lSystemString: string) =
+    [DrawForward(defaultLength);Turn(defaultAngle)]
+ 
+let test3 = 
+    let commands = processLsystem 1 |>convertToTurtle        
+    commands =
+        [Turn(defaultAngle)          // +
+         DrawForward(defaultLength)  // B
+         Turn(-defaultAngle)         // -
+         DrawForward(defaultLength)  // A
+         Turn(-defaultAngle)         // -
+         DrawForward(defaultLength)  // B   
+         Turn(defaultAngle)]         // +
+         
+// a default turtle location
+let turtle = { x = 0.0; y = 0.0; angle = 0.0; c = red }
+
+//TODO 2.3 
+// From your renderer script (SDL.fsx or SVG.fsx) you can now call 
+// processLsystem n |> convertToTurtle |> processTurtle turtle
+// this will give you a list of line segments to be rendered

@@ -1,3 +1,5 @@
+// TODO: We will be changing this to load the other 
+// fsx files as the workshop progresses.
 #load "1-GettingStarted.fsx"
 
 open System

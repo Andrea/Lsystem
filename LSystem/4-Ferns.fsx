@@ -1,4 +1,5 @@
-﻿// woo ferns!
+﻿module Domain
+// woo ferns!
 
 type Point = { x : int; y : int }
 

@@ -1,4 +1,5 @@
-﻿
+﻿// woo ferns!
+
 type Point = { x : int; y : int }
 
 type Color = { r:byte; g:byte; b:byte; } 
@@ -90,9 +91,11 @@ let processLsystem max lsystem =
 F  = Move forward
 X  = No op
 - = Turn left 'degree'
-+ = Turn right 'degre'
++ = Turn right 'degree'
 [ = remember current position and angle on stack... VERY IMPORTANT: remember the angle!! (A++ easy to forget) 
- ] = restore position and use it to draw from there
+] = restore position and use it to draw from there.
+
+HINT! You are probably going to need to add some new LogoCommands ...
 
 *) 
 
@@ -105,7 +108,7 @@ let ferns = {
         | 'F' -> "FF"
         | c -> string c
     Actions = 
-        fun max c ->
+        fun max c -> //FEED ME!
             None
 }
 

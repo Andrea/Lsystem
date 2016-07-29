@@ -60,10 +60,12 @@ let processTurtle turtle program =
 //      'B' -> "-A+B+A-" 
     
 let processLsystem iterations =
-    let rec proc iter (current: string) =  
+    let rec proc iter (current: string) =
+      // Implement this    
       current
     proc 0 "A"
 
+// Verify it works with this :D
 let test1  = processLsystem 1 = "+B-A-B+"  
 let test2  = processLsystem 2 = "+-A+B+A--+B-A-B+--A+B+A-+"  
 
@@ -76,6 +78,7 @@ let defaultAngle = 60.0
 // - turns -60 degrees
 
 let convertToTurtle (lSystemString: string) =
+    // The values below are just so that this file compiles, complete a valid implemntation of this function
     [DrawForward(defaultLength);Turn(defaultAngle)]
  
 let test3 = 

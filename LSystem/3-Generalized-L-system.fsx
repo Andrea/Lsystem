@@ -1,4 +1,5 @@
-﻿
+﻿module Domain
+
 type Point = { x : int; y : int }
 
 type Color = { r:byte; g:byte; b:byte; } 

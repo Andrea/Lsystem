@@ -170,3 +170,6 @@ let dragon = {
             | '-' -> Some <| [Turn -90.0]
             | _ -> None
 }
+
+// a default turtle location
+let turtle = { x = 0.0; y = 0.0; angle = 0.0; c = red }

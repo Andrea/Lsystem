@@ -81,6 +81,7 @@ let convertToTurtle (lSystemString: string) =
     // The values below are just so that this file compiles, complete a valid implemntation of this function
     [DrawForward(defaultLength);Turn(defaultAngle)]
  
+// Verify that the function convertToTurtle works as expected
 let test3 = 
     let commands = processLsystem 1 |>convertToTurtle        
     commands =

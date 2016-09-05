@@ -25,6 +25,9 @@ type LTurtle =
       y : float 
       c : Color}
 
+// a default turtle location
+let turtle = { x = 0.0; y = 0.0; angle = 0.0; c = red }
+
 /// interprets a logo program and produces a line segment list to render
 let processTurtle turtle program =
     let rec phono output turtle = function
@@ -60,21 +63,16 @@ let processTurtle turtle program =
 //      'B' -> "-A+B+A-" 
     
 let processLsystem iterations =
-    let rec juan (current:string) iteration =
-        if iteration = iterations then current
-        else
-            let sb = System.Text.StringBuilder()
-            for x in current do
-                if x = 'A' then sb.Append("+B-A-B+") |> ignore
-                elif x = 'B' then sb.Append("-A+B+A-") |> ignore
-                else sb.Append x |> ignore
-            juan (sb.ToString()) (iteration+1)
-    juan "A" 0
+    let rec proc iter (current: string) =
+      // Implement this    
+      current
+    proc 0 "A"
 
+// Verify it works with this :D
 let test1  = processLsystem 1 = "+B-A-B+"  
 let test2  = processLsystem 2 = "+-A+B+A--+B-A-B+--A+B+A-+"  
 
-let defaultLength = 2.0
+let defaultLength = 20.0
 let defaultAngle = 60.0
 
 // TODO 2.2: Convert the string into turtle commands
@@ -83,14 +81,10 @@ let defaultAngle = 60.0
 // - turns -60 degrees
 
 let convertToTurtle (lSystemString: string) =
-    [for c in lSystemString do
-        match c with
-        | 'A' 
-        | 'B' -> yield DrawForward(defaultLength)
-        | '+' -> yield Turn(defaultAngle)
-        | '-' -> yield Turn(-defaultAngle)
-       ]
-    
+    // The values below are just so that this file compiles, complete a valid implemntation of this function
+    [DrawForward(defaultLength);Turn(defaultAngle)]
+ 
+// Verify that the function convertToTurtle works as expected
 let test3 = 
     let commands = processLsystem 1 |>convertToTurtle        
     commands =
@@ -102,8 +96,6 @@ let test3 =
          DrawForward(defaultLength)  // B   
          Turn(defaultAngle)]         // +
          
-// a default turtle location
-let turtle = { x = 0.0; y = 0.0; angle = 0.0; c = red }
 
 //TODO 2.3 
 // From your renderer script (SDL.fsx or SVG.fsx) you can now call 

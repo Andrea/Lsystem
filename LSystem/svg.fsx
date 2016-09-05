@@ -28,14 +28,13 @@ let toSvg (ops:Domain.LineSegment seq) =
       yield footer ]
     |> String.concat "\n"
 
-let path = "../lsystem.html"
-let save template = File.WriteAllText(path,template)
+let path = "lsystem.html"
+let save template = 
+    File.WriteAllText(path,template)
+    System.Diagnostics.Process.Start (path:string)
 
-let main   =
-    randomPOOP 20
-    |> toSvg 
-    |> save
-    0
 
-main 
+randomPOOP 50
+|> toSvg 
+|> save
 

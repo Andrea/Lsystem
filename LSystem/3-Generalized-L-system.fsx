@@ -75,13 +75,15 @@ let processLsystem max lsystem =
         if iteration = max then current
         else
             let sb = System.Text.StringBuilder()
-            for x in current.ToCharArray() do
-                sb.Append(lsystem.Productions x) |> ignore
+            for x in current do sb.Append(lsystem.Productions x) |> ignore
             gen (sb.ToString()) (iteration+1)
               
     let finish = gen lsystem.Axiom 0
     // now convert to turtle commands
-    finish.ToCharArray() |> List.ofArray |> List.choose (lsystem.Actions max) |> List.collect id
+    finish.ToCharArray() 
+    |> List.ofArray 
+    |> List.choose (lsystem.Actions max) 
+    |> List.collect id
 
 
 
@@ -90,23 +92,8 @@ let processLsystem max lsystem =
 // TODO 3 :These are some L-systems... go nuts!!! 
 //Change colours, change the productions, etc!!
 
-let cantor width = {
-    Axiom = "A"
-    Productions = function 'A' -> "ABA" | _ -> "BBB"
-    Actions = 
-        fun max c -> 
-            let length =   
-                let width = float width
-                if max = 0 then width 
-                else width / (System.Math.Pow(3.0, float max))
-     
-            match c with 
-            | 'A' -> Some <| [DrawForward(length)]
-            | _ -> Some <| [MoveForward(length)]
-    
-}
-
 let sierpinski width = {
+    // https://en.wikipedia.org/wiki/Sierpinski_triangle
     Axiom = "A"
    
     Productions =
@@ -133,6 +120,8 @@ let sierpinski width = {
 
 
 let koch = {
+    //https://en.wikipedia.org/wiki/Koch_snowflake
+    // warning! go easy on the amount of iterations on this one!
     Axiom = "F"
    
     Productions = 
@@ -150,23 +139,46 @@ let koch = {
             | _ -> None
 }
 
+
+let cantor width = {
+    // https://en.wikipedia.org/wiki/Cantor_set
+    // to see this one in all it's glory, you will need to plot
+    // each iteration on successive rows!
+    Axiom = "A"
+    Productions = function 'A' -> "ABA" | _ -> "BBB"
+    Actions = 
+        fun max c -> 
+            let length =   
+                let width = float width
+                if max = 0 then width 
+                else width / (System.Math.Pow(3.0, float max))
+     
+            match c with 
+            | 'A' -> Some <| [DrawForward(length)]
+            | _ -> Some <| [MoveForward(length)]
+    
+}
+
 let dragColours = [for x in 0..20 -> x,randomColor()] |> dict
 
 let dragon = {
+    //https://en.wikipedia.org/wiki/Dragon_curve
     Axiom = "FX"
    
     Productions = 
         function
-        | 'X' -> "X+YF+" 
-        | 'Y' -> "-FX-Y"
+        | 'X' -> "X+YF+F" 
+        | 'Y' -> "XX-FX-YY"
         | c -> string c
 
     Actions = 
         fun max c -> 
-            let length = 5.0
+            let length = float <| chaos.Next(1,10)
             match c with
             | 'F' -> Some <| [DrawForward(length)]
-            | '+' -> Some <| [Turn 90.0]
+            | '+' -> Some <| [Turn (float(chaos.Next(45,90)))]
             | '-' -> Some <| [Turn -90.0]
+            | 'Z' -> Some <| [ChangeColor(randomColor())]
             | _ -> None
+
 }

@@ -59,7 +59,7 @@ let processTurtle turtle program =
                 elif delta < 0.0 && d < 0.0 then 360.0 + d
                 else d
             aux output {turtle with angle = d} t
-    List.rev(phono [] turtle program)
+    List.rev(aux [] turtle program)
 
     
 type LSystem = {

@@ -20,6 +20,9 @@ type LogoCommand =
     | MoveForward of float
     | ChangeColor of Color
     | Turn of float
+    | Push 
+    | Pop
+    
    
 type LTurtle = 
     { angle : float
@@ -60,7 +63,13 @@ let processTurtle turtle program =
                 else d
             phono output {turtle with angle = d} t
         // HINT: You might want to do something about the pushing and poping ;)   
-                
+        | Push :: t ->
+            state.push (turtle.x, turtle.y, turtle.angle)
+            phono output turtle t
+        | Pop :: t ->
+            let posx, posy, angle = state.Pop()
+            phono output {turtle with x = posx; y = posy; angle = angle}
+
     List.rev(phono [] turtle program)
 
     

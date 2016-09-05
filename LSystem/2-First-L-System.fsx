@@ -60,14 +60,21 @@ let processTurtle turtle program =
 //      'B' -> "-A+B+A-" 
     
 let processLsystem iterations =
-    let rec proc iter (current: string) =  
-      current
-    proc 0 "A"
+    let rec juan (current:string) iteration =
+        if iteration = iterations then current
+        else
+            let sb = System.Text.StringBuilder()
+            for x in current do
+                if x = 'A' then sb.Append("+B-A-B+") |> ignore
+                elif x = 'B' then sb.Append("-A+B+A-") |> ignore
+                else sb.Append x |> ignore
+            juan (sb.ToString()) (iteration+1)
+    juan "A" 0
 
 let test1  = processLsystem 1 = "+B-A-B+"  
 let test2  = processLsystem 2 = "+-A+B+A--+B-A-B+--A+B+A-+"  
 
-let defaultLength = 20.0
+let defaultLength = 2.0
 let defaultAngle = 60.0
 
 // TODO 2.2: Convert the string into turtle commands
@@ -76,8 +83,14 @@ let defaultAngle = 60.0
 // - turns -60 degrees
 
 let convertToTurtle (lSystemString: string) =
-    [DrawForward(defaultLength);Turn(defaultAngle)]
- 
+    [for c in lSystemString do
+        match c with
+        | 'A' 
+        | 'B' -> yield DrawForward(defaultLength)
+        | '+' -> yield Turn(defaultAngle)
+        | '-' -> yield Turn(-defaultAngle)
+       ]
+    
 let test3 = 
     let commands = processLsystem 1 |>convertToTurtle        
     commands =

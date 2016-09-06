@@ -101,3 +101,9 @@ let test3 =
 // From your renderer script (SDL.fsx or SVG.fsx) you can now call 
 // processLsystem n |> convertToTurtle |> processTurtle turtle
 // this will give you a list of line segments to be rendered
+// using either the replace function (sdl) or toSvg |> save (svg)
+// eg
+//  SDL
+//  processLsystem 1 
+//  |> convertToTurtle        
+//  |> processTurtle turtle

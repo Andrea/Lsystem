@@ -28,12 +28,15 @@ let toSvg (ops:Domain.LineSegment seq) =
       yield footer ]
     |> String.concat "\n"
 
+// you might need to change this to a known path if you are terribly unlucky
 let path = "lsystem.html"
 let save template = 
     File.WriteAllText(path,template)
     System.Diagnostics.Process.Start (path:string)
 
-
+// you can call toSvg with sone line segments to produce an SVG string
+// you can then pipe this into the save function which will write to to an HTML
+// file and attempt to open it for you
 randomPOOP 50
 |> toSvg 
 |> save

@@ -4,7 +4,6 @@
 // fsx files as the workshop progresses.
 #load "1-GettingStarted.fsx" 
 
-
 open System
 open Domain
 open SDL.Geometry
@@ -20,6 +19,9 @@ let delayTime = uint32(1000.0 / fps)
 type GraphicsMessage =
     | Add of LineSegment list
     | Replace of LineSegment list
+
+// you can largely ignore all this stuff, it is just to get the graphics going
+// and allow you to interact with them from FSI
 
 type state = 
     { system : SDL.Init.System; 
@@ -80,6 +82,7 @@ let agent = MailboxProcessor<GraphicsMessage>.Start(fun inbox ->
                 delay()
             
                 return! coreLoop state
+                
     }
     coreLoop state
 )
@@ -90,129 +93,6 @@ let replace lines = agent.Post <| Replace lines
 let add lines = agent.Post <| Add lines
 
 
-type LGen =
-    | ForwardA
-    | ForwardB
-    | ForwardC
-    | SkipD
-    | SkipE
-    | SkipF
-    | PlaceholderG
-    | PlaceholderH
-    | PlaceholderI
-    | TurnRight
-    | TurnLeft
-    | ChangeColour of int
-    | Branch of LGen list
-    
-    with override x.ToString() = 
-            match x with
-            | ForwardA -> "A"
-            | ForwardB -> "B"
-            | ForwardC -> "C"
-            | SkipD    -> "D"
-            | SkipE     -> "E"
-            | SkipF     -> "F"
-            | PlaceholderG -> "G"
-            | PlaceholderH  -> "H"
-            | PlaceholderI -> "I"
-            | TurnRight -> "+"  
-            | TurnLeft -> "+"
-            | ChangeColour i -> string i
-            | Branch inner -> "[" + (inner |> List.map(fun i -> i.ToString()) |> String.concat "") + "]"
-
-                
-let gen () =
-    let rec genRewrite n =
-        let rec aux c data =
-            if c = n then data
-            else
-                match chaos.Next(1,14) with
-                | 1 -> aux (c+1) (ForwardA :: data)
-                | 2 -> aux (c+1) (ForwardB :: data)
-                | 3 -> aux (c+1) (ForwardC :: data)
-                | 4 -> aux (c+1) (SkipD :: data)
-                | 5 -> aux (c+1) (SkipE :: data)
-                | 6 -> aux (c+1) (SkipF :: data)
-                | 7 -> aux (c+1) (PlaceholderG :: data)
-                | 8 -> aux (c+1) (PlaceholderH :: data)
-                | 9 -> aux (c+1) (PlaceholderI :: data)
-                | 10 ->aux (c+1) ( TurnRight :: data)
-                | 11 ->aux (c+1) ( TurnLeft :: data)
-                | 12 ->aux (c+1) ( ChangeColour(chaos.Next(0,10)) :: data)
-                | 13 ->aux (c+1) ( Branch(genRewrite(chaos.Next(1,6)))  :: data)
-        aux 0 []
-    [for x in 0..chaos.Next(1,10) -> 
-        let r = genRewrite(chaos.Next(1,10))
-        match chaos.Next(1,10) with
-        | 1 -> ForwardA, r
-        | 2 -> ForwardB, r
-        | 3 -> ForwardC, r
-        | 4 -> SkipD, r
-        | 5 -> SkipE, r
-        | 6 -> SkipF, r
-        | 7 -> PlaceholderG, r
-        | 8 -> PlaceholderH, r
-        | 9 -> PlaceholderI, r
-                 ]
-    |> List.map(fun (k,v) -> 
-        printfn "%A -> %A" k v
-        (char <| k.ToString(),v))
-    |> Map.ofList
-
-let randomLsystem() =
-    let defaultLength = 5.0 + chaos.NextDouble() * 20.0
-    let defaultAngle = chaos.NextDouble() * 90.0
-    let things = gen()
-    let co = [for x in 0..9 -> x, randomColor()] |> Map.ofList
-    { Axiom = "ABCDEFGHI"
-      Productions = 
-        fun c -> 
-            match things.TryFind c with
-            | Some v -> v.ToString()
-            | None -> string c
-      Actions = 
-        fun max c -> 
-            match c with 
-            | 'A' -> Some <| [DrawForward(defaultLength)]
-            | 'B' -> Some <| [DrawForward(defaultLength)]
-            | 'C' -> Some <| [DrawForward(defaultLength)]
-            | 'D' -> Some <| [MoveForward(defaultLength)]
-            | 'E' -> Some <| [MoveForward(defaultLength)]
-            | 'F' -> Some <| [MoveForward(defaultLength)]
-            | 'G' -> None
-            | 'H' -> None
-            | 'I' -> None
-            | '+' -> Some <| [Turn(defaultAngle)]
-            | '-' -> Some <| [Turn(-defaultAngle)]
-            | '0' -> Some <| [ChangeColor(co.[0])]
-            | '1' -> Some <| [ChangeColor(co.[1])]
-            | '2' -> Some <| [ChangeColor(co.[2])]
-            | '3' -> Some <| [ChangeColor(co.[3])]
-            | '4' -> Some <| [ChangeColor(co.[4])]
-            | '5' -> Some <| [ChangeColor(co.[5])]
-            | '6' -> Some <| [ChangeColor(co.[6])]
-            | '7' -> Some <| [ChangeColor(co.[7])]
-            | '8' -> Some <| [ChangeColor(co.[8])]
-            | '9' -> Some <| [ChangeColor(co.[9])]
-
-            | _ -> None // todo
-    
-    }
-//PlaceholderG -> [ForwardC; TurnRight; SkipD; SkipD]
-//SkipD -> [Branch [ChangeColour 2]; ChangeColour 6; Branch [PlaceholderI; SkipF]; PlaceholderI; ForwardC; PlaceholderH]
-//PlaceholderH -> [SkipF; ForwardB; TurnRight; ForwardB; ForwardB; PlaceholderI; PlaceholderI; PlaceholderI; TurnLeft]
-//PlaceholderI -> [Branch [TurnRight; SkipF; TurnRight; ForwardA; ForwardC]; SkipF; ChangeColour 1; TurnRight]
-//ForwardC -> [TurnLeft; PlaceholderG; TurnLeft; ForwardA]
-//SkipE -> [ForwardB; PlaceholderI; SkipF; SkipF; PlaceholderI; SkipF; TurnRight]
-//PlaceholderH -> [ChangeColour 6; ForwardC; ForwardC; ForwardA; TurnLeft; PlaceholderG]
-//ForwardB -> [PlaceholderH; PlaceholderH; ForwardC; TurnRight; SkipD; ForwardA; SkipD]
-//PlaceholderH -> [TurnLeft; TurnRight;
-// Branch [PlaceholderG; ForwardB; ForwardA; ForwardB; TurnRight]; PlaceholderH;
-//SkipD; PlaceholderI; SkipD]
-//PlaceholderG -> [PlaceholderG; ChangeColour 3; PlaceholderH; PlaceholderH]
-
-randomLsystem()
-|> processLsystem 10
-|> processTurtle turtle
+// you can call "replace" to render a bunch of line segments to the screen
+randomPOOP 50
 |> replace

@@ -1,4 +1,7 @@
-﻿module Domain
+﻿#if INTERACTIVE
+#else
+module Domain
+#endif
 
 type Point = { x : int; y : int }
 
@@ -62,23 +65,36 @@ let processTurtle turtle program =
 //      'A' -> "+B-A-B+" 
 //      'B' -> "-A+B+A-" 
     
-let processLsystem iterations =
+let processLsystem maxIterations =
     let rec proc iter (current: string) =
-      // Implement this    
-      current
+      if iter = maxIterations then current
+      else
+          // the stringbuilder is a fast mutable type
+          let sb = System.Text.StringBuilder()  
+          let append (s:string) = sb.Append s |> ignore        
+          // todo: go through each character and replace with the rules above.
+          // or use the same character if unrecognised
+          // you can use the append function to add strings to the builder
+          
+                 
+          // todo: call the next iteration recursively with the results
+          (sb.ToString())
     proc 0 "A"
 
+
 // Verify it works with this :D
+// you can execute these test functions and they should return true!
 let test1  = processLsystem 1 = "+B-A-B+"  
 let test2  = processLsystem 2 = "+-A+B+A--+B-A-B+--A+B+A-+"  
 
-let defaultLength = 20.0
-let defaultAngle = 60.0
 
 // TODO 2.2: Convert the string into turtle commands
 // A and B do the same thing - draw forward 
 // + turns 60 degrees
 // - turns -60 degrees
+
+let defaultLength = 20.0
+let defaultAngle = 60.0
 
 let convertToTurtle (lSystemString: string) =
     // The values below are just so that this file compiles, complete a valid implemntation of this function
@@ -107,3 +123,4 @@ let test3 =
 //  processLsystem 1 
 //  |> convertToTurtle        
 //  |> processTurtle turtle
+//

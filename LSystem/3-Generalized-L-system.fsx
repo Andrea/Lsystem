@@ -182,3 +182,12 @@ let dragon = {
             | _ -> None
 
 }
+
+
+// since some generalization has happened, creating the logo commands 
+// explicty has been removed. here is an example on how to use the above 
+// functions in SDL. (note that some LSystems take extra paramters, for example, for width)
+//dragon 
+//|> processLsystem 3 
+//|> processTurtle turtle
+//|> replace

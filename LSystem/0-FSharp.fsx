@@ -76,3 +76,8 @@ let myString = "Monkeys"
 let myResult = for x in myString do printf "%c and cat " x
 
 
+// convert from char to string
+
+let myChar = 'v'
+let aString : string  = (string myChar)
+

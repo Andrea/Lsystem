@@ -32,7 +32,6 @@ type BodyParts =
     | Leg
 
 // when you have an ADT (in F# we call them discriminated unions)
-
 let find part = 
     match part with
     | Hand -> "woohoo you found a hand!"
@@ -47,5 +46,33 @@ let rec factorial n =
     | x -> factorial(n-1) * x
 
 factorial 4
+
+
+// conditionals can be used without parens but you do need and else 
+let x = if true then 1 else 2
+
+
+//Creating lists
+// use brackets, not the semi colon ;
+let myList = [1;2;3;4]
+
+let someString = "asdasd"
+let anotherList = [someString]
+
+
+// calling some functions using the |> operator 
+
+let aList = [1..4]
+aList
+|> List.filter( fun x -> x > 1)
+|> List.sum
+
+
+(* Some stuff that might be useful during this workshop *)
+
+
+// Iterate over a string and 
+let myString = "Monkeys"
+let myResult = for x in myString do printf "%c and cat " x
 
 

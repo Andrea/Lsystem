@@ -1,4 +1,6 @@
 ﻿
+// This is a whitespace sensitive Language
+
 // How to define a value
 let myNumber = 4
 // select the code and press Alt+Enter to run it, it should show something like

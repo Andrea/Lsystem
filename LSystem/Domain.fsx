@@ -32,9 +32,9 @@ let processTurtle turtle program =
     
     let mutable state = Stack<double * double * double>()
 
-    let rec phono output turtle = function
+    let rec aux output turtle = function
         | [] -> output
-        | ChangeColor c :: t -> phono output {turtle with c = c} t
+        | ChangeColor c :: t -> aux output {turtle with c = c} t
         | DrawForward d :: t -> 
             let rads = turtle.angle * (System.Math.PI / 180.0)
             let x = turtle.x + d * cos rads
@@ -44,14 +44,14 @@ let processTurtle turtle program =
                 {   startPoint = {x = int turtle.x; y = int turtle.y}
                     endPoint = {x = int x; y = int y}
                     color = newTurtle.c }
-            phono (seg::output) newTurtle t
+            aux (seg::output) newTurtle t
             
         | MoveForward d :: t -> 
             let rads = turtle.angle * (System.Math.PI / 180.0)
             let x = turtle.x + d * cos rads
             let y = turtle.y + d * sin rads
             let newTurtle = {turtle with x = x; y= y }
-            phono output newTurtle t
+            aux output newTurtle t
 
         | Turn delta :: t -> 
             let d = turtle.angle + delta
@@ -60,15 +60,15 @@ let processTurtle turtle program =
                 if delta > 0.0 && d > 360.0 then d - 360.0
                 elif delta < 0.0 && d < 0.0 then 360.0 + d
                 else d
-            phono output {turtle with angle = d} t
+            aux output {turtle with angle = d} t
         | Push :: t  -> state.Push (turtle.x, turtle.y, turtle.angle)
-                        phono output turtle t   
+                        aux output turtle t   
         | Pop :: t -> 
                 let xe, ye, ange = state.Pop()
                 let newTurtle = {turtle with x = xe; y= ye ; angle = ange }
-                phono output newTurtle t   
+                aux output newTurtle t   
                 
-    List.rev(phono [] turtle program)
+    List.rev(aux [] turtle program)
 
     
 type LSystem = {

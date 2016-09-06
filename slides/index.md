@@ -13,13 +13,36 @@
 ---
 
 ## Andrea Magnorsky @silverspoon
+
 ## Ross McKinlay @pezi_pink
 
 ***
+## WiFi
 
+### username : zenguest
+### password : Z3n-guest
+
+---
 ## git clone https://github.com/Andrea/Lsystem
 
 ***
+
+## Setup Windows
+
+*  Visual studio is your friend (there is a comunity edition)
+
+---
+
+## Setup  Mac and linux
+
+* Install mono `apt-get mono`
+* Install Visual Studio Code (atom clone)
+* Install ionide
+
+
+***
+
+## Setup Workshop
 
 ### Run RandomPOOP in your prefered rendering thing
 
